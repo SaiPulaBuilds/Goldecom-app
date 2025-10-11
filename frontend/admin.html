@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Form</title>
+  <style>
+    .form-container {
+      max-width: 600px;
+      margin: 50px auto;
+      border: 1px solid black;
+      padding: 20px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 30px 20px;
+      align-items: center;
+    }
+
+    label {
+      text-align: right;
+      padding-right: 10px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .form-actions {
+      grid-column: span 2;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: rgb(22, 129, 175);
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: rgb(17, 110, 150);
+    }
+
+    button.cancel {
+      background-color: #ccc;
+      color: black;
+    }
+
+    button.cancel:hover {
+      background-color: #999;
+    }
+
+    #responseMessage {
+      grid-column: span 2;
+      margin-top: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <form id="productForm">
+      <label for="product-name">Name:</label>
+      <input type="text" id="product-name" name="productName" placeholder="Enter Product Name" />
+
+      <label for="product-price">Price:</label>
+      <input type="text" id="product-price" name="productPrice" placeholder="Enter the Price" />
+
+      <label for="product-image">Image URL:</label>
+      <input type="text" id="product-image" name="productImage" placeholder="Enter the image URL" />
+
+      <label for="product-description">Description:</label>
+      <textarea id="product-description" name="productDescription" placeholder="Enter Product Description"></textarea>
+
+      <label for="stock">Stock:</label>
+      <input type="text" name="stockvalue" placeholder="Enter the value" />
+
+      <div id="responseMessage"></div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel">Cancel</button>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("productForm");
+    const messageEl = document.getElementById("responseMessage");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("product-name").value.trim();
+      const price = document.getElementById("product-price").value.trim();
+      const image = document.getElementById("product-image").value.trim();
+      const description = document.getElementById("product-description").value.trim();
+      const stock = document.querySelector("input[name='stockvalue']").value.trim();
+
+      if (!name || !price || !image || !description || !stock) {
+        messageEl.textContent = "Please fill in all fields.";
+        messageEl.style.color = "red";
+        return;
+      }
+
+      messageEl.textContent = "Submitting...";
+      messageEl.style.color = "blue";
+
+      try {
+        const res = await fetch("http://localhost:3000/product", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+          productName: name,
+          productPrice: price,
+          productImage: image,
+          productDescription: description,
+          stockValue: stock
+})
+
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          messageEl.textContent = "Product added successfully!";
+          messageEl.style.color = "green";
+          form.reset();
+        } else {
+          messageEl.textContent = "Failed to add product.";
+          messageEl.style.color = "red";
+        }
+      } catch (err) {
+        messageEl.textContent = "Server error. Please try again.";
+        messageEl.style.color = "red";
+      }
+    });
+
+    document.querySelector(".cancel").addEventListener("click", () => {
+      form.reset();
+      messageEl.textContent = "";
+    });
+  </script>
+</body>
+</html>

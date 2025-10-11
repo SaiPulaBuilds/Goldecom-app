@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+    }
+    .cart-container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding: 1rem 0;
+    }
+    .cart-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .cart-details {
+      flex: 1;
+      margin-left: 1rem;
+    }
+    .cart-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .cart-actions button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .remove-btn {
+      background-color: #c82333;
+      color: white;
+    }
+    .checkout-btn {
+      background-color: #5b5d5c;
+      color: rgb(246, 241, 241);
+      margin-top: 2rem;
+      width: 100%;
+      height: 40px;
+      border: None;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .checkout-btn:hover{
+        background-color: #131514;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Cart</h1>
+  <div class="cart-container" id="cartContainer">
+    <p>Loading cart items...</p>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login to view your cart.");
+      window.location.href = "login.html";
+    }
+
+    fetch("http://localhost:3000/api/cart", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(res => res.json())
+    .then(cartItems => {
+      const container = document.getElementById("cartContainer");
+      container.innerHTML = "";
+
+      if (cartItems.length === 0) {
+        container.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+
+      cartItems.forEach(item => {
+       const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+        <img src="http://localhost:3000${item.productImage}" alt="${item.productName}" />
+        <div class="cart-details">
+        <h3>${item.productName}</h3>
+        <p>₹${item.productPrice}</p>
+        <p>Quantity: 
+            <button onclick="updateQuantity('${item._id}', -1)">−</button>
+            <span id="qty-${item._id}">${item.quantity}</span>
+            <button onclick="updateQuantity('${item._id}', 1)">+</button>
+        </p>
+        </div>
+        <div class="cart-actions">
+        <button class="remove-btn" onclick="removeFromCart('${item._id}')">Remove</button>
+        </div>`;
+        container.appendChild(div);
+        });
+
+
+      const checkoutBtn = document.createElement("button");
+      checkoutBtn.className = "checkout-btn";
+      checkoutBtn.textContent = "Proceed to Checkout";
+      container.appendChild(checkoutBtn);
+    })
+    .catch(err => {
+      console.error("Error loading cart:", err);
+      document.getElementById("cartContainer").innerHTML = "<p>Failed to load cart.</p>";
+    });
+    function updateQuantity(cartItemId, change) {
+  fetch(`http://localhost:3000/api/cart/${cartItemId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ change })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.removed) {
+      document.getElementById(`qty-${cartItemId}`).closest(".cart-item").remove();
+    } else {
+      document.getElementById(`qty-${cartItemId}`).textContent = data.newQuantity;
+    }
+  })
+  .catch(err => {
+    console.error("Quantity update error:", err);
+    alert("Failed to update quantity.");
+  });
+}
+
+
+    function removeFromCart(cartItemId) {
+      fetch(`http://localhost:3000/api/cart/${cartItemId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert("Item removed from cart.");
+        location.reload();
+      })
+      .catch(err => {
+        console.error("Remove error:", err);
+        alert("Failed to remove item.");
+      });
+    }
+    if (document.querySelectorAll(".cart-item").length === 0) {
+  document.getElementById("cartContainer").innerHTML = "<p>Your cart is empty.</p>";
+}
+
+  </script>
+</body>
+</html>
