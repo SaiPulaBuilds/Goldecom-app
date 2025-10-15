@@ -65,12 +65,13 @@
             <button type="submit">Login</button>
         </form>
     </div>
+    <script src="config.js"></script>
     <script>
         document.getElementById("form").addEventListener("submit",function(e){
             e.preventDefault();
             const email=document.getElementById("email").value;
             const password=document.getElementById("password").value;
-            fetch("http://localhost:3000/login",{
+            fetch(`${API_URL}/login`,{
                 method:"POST",
                 headers:{"Content-Type":"application/json"},
                 body:JSON.stringify({email,password})
