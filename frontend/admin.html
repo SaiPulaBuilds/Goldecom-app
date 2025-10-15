@@ -97,7 +97,7 @@
       </div>
     </form>
   </div>
-
+  <script src="config.js"></script>
   <script>
     const form = document.getElementById("productForm");
     const messageEl = document.getElementById("responseMessage");
@@ -121,7 +121,7 @@
       messageEl.style.color = "blue";
 
       try {
-        const res = await fetch("http://localhost:3000/product", {
+        const res = await fetch(`${API_URL}/product`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
