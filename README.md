@@ -1,11 +1,11 @@
-# 🛒 Gold Ecommerce App — Learning Routing & Backend Frameworks
+#  Gold Ecommerce App — Learning Routing & Backend Frameworks
 
-## 🎯 Purpose
+##  Purpose
 This project helps me understand how routing works in both frontend and backend, and how they communicate in a full-stack web application. I'm building this to learn how pages load, how data flows, and how servers respond to requests.
 
 ---
 
-## 🧱 Project Structure
+##  Project Structure
 
 ### Frontend
 - Built with HTML, CSS, and JavaScript
