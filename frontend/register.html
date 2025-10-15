@@ -98,6 +98,7 @@
 
     
 </div>
+ <script src="config.js"></script>
 <script>
     document.getElementById("register").addEventListener("submit", function(e){
       e.preventDefault();
@@ -111,7 +112,7 @@
       return;
     }
   
-      fetch("http://localhost:3000/register",{
+      fetch(`${API_URL}/register",{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phoneNo, password })
