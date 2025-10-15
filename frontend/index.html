@@ -288,7 +288,7 @@
               }
 
               const product = products[index];
-              fetch("http://localhost:3000/api/cart", {
+              fetch(`${API_URL}/api/cart`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
