@@ -257,7 +257,7 @@
       });
 
       // Fetch and render products
-      fetch(`${API_URL}/products`)
+      fetch(`${API_URL}/api/products`)
         .then(res => res.json())
         .then(products => {
           const container = document.querySelector(".container-products");
