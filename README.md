@@ -1,41 +1,80 @@
-#  Gold Ecommerce App — Learning Routing & Backend Frameworks
+# Gold Ecommerce App
 
-##  Purpose
-This project helps me understand how routing works in both frontend and backend, and how they communicate in a full-stack web application. I'm building this to learn how pages load, how data flows, and how servers respond to requests.
+> Full-stack ecommerce prototype built to explore routing, authentication, and frontend/backend integration using Node.js, Express, MongoDB, and vanilla JS.
 
 ---
 
-##  Project Structure
+##  Tech Stack
+
+| Layer       | Tech                                |
+|-------------|-------------------------------------|
+| Frontend    | HTML, CSS, JavaScript               |
+| Backend     | Node.js, Express                    |
+| Database    | MongoDB Atlas                       |
+| Auth        | JWT (JSON Web Tokens)               |
+| Deployment  | Vercel (frontend), Render (backend) |
+
+---
+
+##  Live URLs
+
+- **Frontend**: [goldecom-app-7aev-git-main-sai-pulas-projects.vercel.app](https://goldecom-app-7aev-git-main-sai-pulas-projects.vercel.app)
+- **Backend**: [`https://your-backend.onrender.com`](https://goldecom-app.onrender.com)
+
+---
+
+##  Routing Overview
 
 ### Frontend
-- Built with HTML, CSS, and JavaScript
-- Pages: `index.html`, `register.html`, `cart.html`
-- Hosted on Netlify
-- Uses `fetch()` to talk to backend APIs
+
+- Static file-based routing (`index.html`, `register.html`, `cart.html`)
+- Navigation via anchor tags (`<a href="register.html">`)
+- Uses `fetch()` to communicate with backend APIs
+- Configured with dynamic `API_URL` in `config.js` for environment switching
 
 ### Backend
-- Built with Node.js and Express
-- Routes:
-  - `POST /register` → handles user registration
-  - `POST /login` → handles login and returns JWT
-  - `GET /api/products` → returns product list
-  - `POST /api/cart` → adds product to cart
-- Connected to MongoDB Atlas
-- Hosted on Render
+
+- Modular Express routes:
+  - `POST /register` → user registration
+  - `POST /login` → JWT-based login
+  - `GET /api/products` → product listing
+  - `POST /api/cart` → add to cart
+  - `GET /api/cart` → fetch cart items
+  - `PATCH /api/cart/:id` → update quantity
+  - `DELETE /api/cart/:id` → remove item
+- Middleware:
+  - JWT verification for protected routes
+  - Error handling and response formatting
 
 ---
 
-## Routing Concepts I'm Learning
+##  Features Implemented
 
-###  Frontend Routing
-- Static routing: clicking links like `<a href="/register.html">` loads pages
-- No frontend framework yet (like React), so routing is file-based
-- After deployment, I need to update links to match the live domain
+-  User registration with password confirmation
+-  JWT-based login and token storage in `localStorage`
+-  Cart functionality with quantity updates and item removal
+-  Dynamic rendering of cart items with image, name, price
+-  Responsive layout using CSS Grid and Flexbox
+-  MongoDB schema for users, products, and cart items
 
-###  Backend Routing
-- Express handles incoming requests based on URL and method
-- Example:
-  ```js
-  app.post('/register', (req, res) => {
-    // Save user to database
-  });
+---
+
+##  Dev Notes
+
+- Frontend hosted on Vercel via Git integration
+- Backend deployed on Render with environment variables
+- CORS configured to allow frontend domain
+- API endpoints tested with Postman and browser fetch
+- Error handling includes token checks, 401/403 responses, and server logs
+
+---
+
+## Learning Goals
+
+- Understand full-stack routing and request/response lifecycle
+- Practice modular backend architecture with Express
+- Learn how frontend and backend communicate via REST APIs
+- Deploy and debug live environments with Vercel and Render
+- Handle authentication and protected routes using JWT
+
+---
