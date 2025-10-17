@@ -79,7 +79,7 @@
             .then(res=>res.json()).then(data=>{
                 if(data.token){
                     localStorage.setItem("token",data.token);
-                    window.location.href=`${URL}`;
+                    window.location.href=URL;
 
                 }else{
                     alert("Login failed: "+data.message)
