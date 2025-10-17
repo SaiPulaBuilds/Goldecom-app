@@ -19,7 +19,7 @@
 ##  Live URLs
 
 - **Frontend**: [goldecom-app-7aev-git-main-sai-pulas-projects.vercel.app](https://goldecom-app-7aev-git-main-sai-pulas-projects.vercel.app)
-- **Backend**: [`https://your-backend.onrender.com`](https://goldecom-app.onrender.com)
+- **Backend**: [https://your-backend.onrender.com](https://goldecom-app.onrender.com)
 
 ---
 
