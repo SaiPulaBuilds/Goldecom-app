@@ -70,12 +70,12 @@
 </head>
 <body>
 <div id="register-form">
-    <form action="http://localhost:3000/register" class="form" method="post" id="register">
+    <form class="form" id="register">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" placeholder="Enter username" required>
     
         <label for="email">Email:</label>
-        <input type="text" id="email" name="email" placeholder="Enter email" required>
+        <input type="email" id="email" name="email" placeholder="Enter email" required>
     
         <label for="phoneNo">Mobile Number:</label>
         <div class="mobile">
@@ -112,7 +112,7 @@
       return;
     }
   
-      fetch(`${API_URL}/register",{
+      fetch(`${API_URL}/register`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phoneNo, password })
