@@ -127,8 +127,8 @@
       console.error("Error loading cart:", err);
       document.getElementById("cartContainer").innerHTML = "<p>Failed to load cart.</p>";
     });
-    function updateQuantity(cartItemId, change) {
-  fetch(`${API_URL}/${cartItemId}`, {
+ function updateQuantity(cartItemId, change) {
+  fetch(`${API_URL}/api/cart/${cartItemId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -136,7 +136,10 @@
     },
     body: JSON.stringify({ change })
   })
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("Bad response");
+    return res.json();
+  })
   .then(data => {
     if (data.removed) {
       document.getElementById(`qty-${cartItemId}`).closest(".cart-item").remove();
@@ -150,26 +153,25 @@
   });
 }
 
-
-    function removeFromCart(cartItemId) {
-      fetch(`${API_URL}/${cartItemId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert("Item removed from cart.");
-        location.reload();
-      })
-      .catch(err => {
-        console.error("Remove error:", err);
-        alert("Failed to remove item.");
-      });
+function removeFromCart(cartItemId) {
+  fetch(`${API_URL}/api/cart/${cartItemId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`
     }
-    if (document.querySelectorAll(".cart-item").length === 0) {
-  document.getElementById("cartContainer").innerHTML = "<p>Your cart is empty.</p>";
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("Bad response");
+    return res.json();
+  })
+  .then(data => {
+    alert("Item removed from cart.");
+    location.reload();
+  })
+  .catch(err => {
+    console.error("Remove error:", err);
+    alert("Failed to remove item.");
+  });
 }
 
   </script>
